@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { Match } from "../lib/api";
+import { formatDate, capitalize } from "../lib/utils";
 
 export interface DataTableProps {
   data: Match[];
@@ -10,7 +11,7 @@ export const DataTable: React.FC<DataTableProps> = ({ data }) => {
   return (
     <div className="overflow-x-auto bg-white shadow rounded-lg">
       <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-50">
+        <thead>
           <tr>
             {[
               "Start Time",
@@ -22,7 +23,7 @@ export const DataTable: React.FC<DataTableProps> = ({ data }) => {
             ].map((heading) => (
               <th
                 key={heading}
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 tracking-wider"
+                className="px-6 py-3 text-left text-xs font-semibold text-[#202027] tracking-wider"
               >
                 {heading}
               </th>
@@ -31,23 +32,23 @@ export const DataTable: React.FC<DataTableProps> = ({ data }) => {
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
           {data.map((row, idx) => (
-            <tr key={idx} className="hover:bg-gray-50">
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                {row.start_time}
+            <tr key={idx}>
+              <td className="px-6 py-4 text-sm text-[#77779d]">
+                {formatDate(row.start_time)}
               </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                {row.status}
+              <td className="px-6 py-4 text-sm text-[#77779d]">
+                {capitalize(row.status)}
               </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+              <td className="px-6 py-4 text-sm text-[#77779d]">
                 {row.home_team}
               </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+              <td className="px-6 py-4 text-sm text-[#77779d]">
                 {row.away_team}
               </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+              <td className="px-6 py-4 text-sm text-[#77779d]">
                 {row.home_score ?? "-"}
               </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+              <td className="px-6 py-4 text-sm text-[#77779d]">
                 {row.away_score ?? "-"}
               </td>
             </tr>

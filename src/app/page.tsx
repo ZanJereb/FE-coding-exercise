@@ -117,7 +117,7 @@ const Home: React.FC = () => {
         onSelectSport={handleSelectedSport}
       />
 
-      <div className="flex-1 p-4 w-4">
+      <div className="w-2/3 p-4">
         <form
           onSubmit={handleSearchSubmit}
           className="relative flex items-center"
