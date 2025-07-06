@@ -4,8 +4,8 @@ import { Tournament } from "../lib/api";
 
 export interface FilterTabsProps {
   tabs: Tournament[];
-  selectedId: number;
-  onSelect: (tab: number) => void;
+  selectedId: number | null;
+  onSelect: (tab: number | null) => void;
 }
 
 export const FilterTabs: React.FC<FilterTabsProps> = ({
@@ -18,7 +18,9 @@ export const FilterTabs: React.FC<FilterTabsProps> = ({
       {tabs.map((tab) => (
         <button
           key={tab.id}
-          onClick={() => onSelect(tab.id)}
+          onClick={() =>
+              onSelect(selectedId === tab.id ? null : tab.id)
+            }
           className={`
             px-4 py-2 whitespace-nowrap rounded-full transition text-xs
             ${
