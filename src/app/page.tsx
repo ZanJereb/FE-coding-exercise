@@ -1,10 +1,10 @@
 "use client";
 import React, { useState, useEffect, ChangeEvent, FormEvent, useCallback } from "react";
-import { SportsSidebar } from "./components/sportsSidebar";
-import { FilterTabs } from "./components/filterTabs";
-import { DataTable } from "./components/dataTable";
+import SportSidebar from "./components/SportSidebar";
 import { getSports, Sport, getTournaments, getMatches, Tournament, Match } from "../app/lib/api";
 import { FiSearch } from "react-icons/fi";
+import DataTable from "./components/dataTable";
+import TorunamentFilter from "./components/TorunamentFilter";
 
 const Home: React.FC = () => {
   // Data states
@@ -118,7 +118,7 @@ const Home: React.FC = () => {
 
   return (
     <div className="flex min-h-screen bg-gray-100">
-      <SportsSidebar
+      <SportSidebar
         sports={sports}
         selectedSportIds={selectedSportIds}
         onSelectSport={handleSelectedSport}
@@ -139,7 +139,7 @@ const Home: React.FC = () => {
           />
         </form>
 
-        <FilterTabs
+        <TorunamentFilter
           tabs={filteredTournaments}
           selectedIds={selectedTournamentIds}
           onSelect={handleTournamentSelect}

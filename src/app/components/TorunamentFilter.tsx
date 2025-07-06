@@ -2,13 +2,13 @@
 import React from "react";
 import { Tournament } from "../lib/api";
 
-export interface FilterTabsProps {
+export interface TorunamentFilterProps {
   tabs: Tournament[];
   selectedIds: number[];
   onSelect: (tabId: number) => void;
 }
 
-export const FilterTabs: React.FC<FilterTabsProps> = ({
+const TorunamentFilter: React.FC<TorunamentFilterProps> = ({
   tabs,
   selectedIds,
   onSelect,
@@ -34,3 +34,5 @@ export const FilterTabs: React.FC<FilterTabsProps> = ({
     </div>
   );
 };
+
+export default TorunamentFilter;

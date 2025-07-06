@@ -17,13 +17,13 @@ const iconMap: Record<string, React.ElementType> = {
   "American football": FaFootballBall,
 };
 
-interface SportsSidebarProps {
+interface SportSidebarProps {
   sports: Sport[];
   selectedSportIds: number[];
   onSelectSport: (id: number) => void;
 }
 
-export const SportsSidebar: React.FC<SportsSidebarProps> = ({
+const SportSidebar: React.FC<SportSidebarProps> = ({
   sports,
   selectedSportIds,
   onSelectSport,
@@ -54,3 +54,5 @@ export const SportsSidebar: React.FC<SportsSidebarProps> = ({
     </aside>
   );
 };
+
+export default SportSidebar;

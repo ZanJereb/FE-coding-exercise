@@ -7,7 +7,7 @@ export interface DataTableProps {
   data: Match[];
 }
 
-export const DataTable: React.FC<DataTableProps> = ({ data }) => {
+const DataTable: React.FC<DataTableProps> = ({ data }) => {
   return (
     <div className="overflow-x-auto bg-white shadow rounded-lg">
       <table className="min-w-full divide-y divide-gray-200">
@@ -58,3 +58,5 @@ export const DataTable: React.FC<DataTableProps> = ({ data }) => {
     </div>
   );
 };
+
+export default DataTable;
