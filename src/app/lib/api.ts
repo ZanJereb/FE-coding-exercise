@@ -13,7 +13,7 @@ export interface Sport {
 export interface Tournament {
   id: number;
   name: string;
-  sportId: string;
+  sportId: number;
 }
 
 export interface Match {
