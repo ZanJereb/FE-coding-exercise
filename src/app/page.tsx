@@ -1,21 +1,38 @@
 "use client";
-import React, { useState, useEffect, ChangeEvent, FormEvent, useCallback } from "react";
+import React, {
+  useState,
+  useEffect,
+  ChangeEvent,
+  FormEvent,
+  useCallback,
+} from "react";
 import SportSidebar from "./components/SportSidebar";
-import { getSports, Sport, getTournaments, getMatches, Tournament, Match } from "../app/lib/api";
+import {
+  getSports,
+  Sport,
+  getTournaments,
+  getMatches,
+  Tournament,
+  Match,
+} from "../app/lib/api";
 import { FiSearch } from "react-icons/fi";
-import DataTable from "./components/dataTable";
-import TorunamentFilter from "./components/TorunamentFilter";
+import DataTable from "./components/DataTable";
+import TorunamentFilter from "./components/TournamentFilter";
 
 const Home: React.FC = () => {
   // Data states
   const [sports, setSports] = useState<Sport[]>([]);
   const [tournaments, setTournaments] = useState<Tournament[]>([]);
-  const [filteredTournaments, setFilteredTournaments] = useState<Tournament[]>([]);
+  const [filteredTournaments, setFilteredTournaments] = useState<Tournament[]>(
+    []
+  );
   const [matches, setMatches] = useState<Match[]>([]);
 
   // UI states
   const [selectedSportIds, setSelectedSportIds] = useState<number[]>([]);
-  const [selectedTournamentIds, setSelectedTournamentIds] = useState<number[]>([]);
+  const [selectedTournamentIds, setSelectedTournamentIds] = useState<number[]>(
+    []
+  );
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [loadingT, setLoadingT] = useState(true);
   const [loadingM, setLoadingM] = useState(true);
@@ -63,29 +80,34 @@ const Home: React.FC = () => {
   // Handlers
   const handleSelectedSport = (sportId: number) => {
     const newSelectedSportIds = selectedSportIds.includes(sportId)
-      ? selectedSportIds.filter(id => id !== sportId)
+      ? selectedSportIds.filter((id) => id !== sportId)
       : [...selectedSportIds, sportId];
     setSelectedSportIds(newSelectedSportIds);
 
     const newFilteredTournaments = newSelectedSportIds.length
-      ? tournaments.filter(t => newSelectedSportIds.includes(t.sportId))
+      ? tournaments.filter((t) => newSelectedSportIds.includes(t.sportId))
       : tournaments;
     setFilteredTournaments(newFilteredTournaments);
 
-    setSelectedTournamentIds(prev =>
-      prev.filter(id => newFilteredTournaments.some(t => t.id === id))
+    setSelectedTournamentIds((prev) =>
+      prev.filter((id) => newFilteredTournaments.some((t) => t.id === id))
     );
   };
 
   const handleTournamentSelect = (tournamentId: number) => {
-    const newSelectedTournamentIds = selectedTournamentIds.includes(tournamentId)
-      ? selectedTournamentIds.filter(id => id !== tournamentId)
+    const newSelectedTournamentIds = selectedTournamentIds.includes(
+      tournamentId
+    )
+      ? selectedTournamentIds.filter((id) => id !== tournamentId)
       : [...selectedTournamentIds, tournamentId];
     setSelectedTournamentIds(newSelectedTournamentIds);
   };
 
-  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value);
-  const handleSearchSubmit = (e: FormEvent) => { e.preventDefault(); };
+  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) =>
+    setSearchTerm(e.target.value);
+  const handleSearchSubmit = (e: FormEvent) => {
+    e.preventDefault();
+  };
 
   useEffect(() => {
     fetchSports();
@@ -94,11 +116,12 @@ const Home: React.FC = () => {
   }, [fetchSports, fetchTournaments, fetchMatches]);
 
   // Loading / error states
-  if (loadingS || loadingT || loadingM) return <div className="p-6">Loading…</div>;
+  if (loadingS || loadingT || loadingM)
+    return <div className="p-6">Loading…</div>;
   if (error) return <div className="p-6 text-red-600">Error: {error}</div>;
 
   // Filter matches
-  const filteredMatches = matches.filter(m => {
+  const filteredMatches = matches.filter((m) => {
     const matchesSearch =
       m.home_team.toLowerCase().includes(searchTerm.toLowerCase()) ||
       m.away_team.toLowerCase().includes(searchTerm.toLowerCase());
@@ -109,7 +132,7 @@ const Home: React.FC = () => {
     }
 
     if (selectedSportIds.length > 0) {
-      const tour = tournaments.find(t => t.id === m.tournamentId);
+      const tour = tournaments.find((t) => t.id === m.tournamentId);
       return tour && selectedSportIds.includes(tour.sportId);
     }
 
