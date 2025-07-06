@@ -1,6 +1,6 @@
-'use client'
-import React from 'react';
-import { Tournament } from '../lib/api';
+"use client";
+import React from "react";
+import { Tournament } from "../lib/api";
 
 export interface FilterTabsProps {
   tabs: Tournament[];
@@ -23,8 +23,8 @@ export const FilterTabs: React.FC<FilterTabsProps> = ({
             px-4 py-2 whitespace-nowrap rounded-full transition text-xs
             ${
               selectedId === tab.id
-                ? 'bg-[#00003a] text-white hover:bg-[#00004c]'
-                : 'bg-[#f0f0f5] text-[#4d4d54] hover:bg-gray-300'
+                ? "bg-[#00003a] text-white hover:bg-[#00004c]"
+                : "bg-[#f0f0f5] text-[#4d4d54] hover:bg-gray-300"
             }
           `}
         >

@@ -1,6 +1,6 @@
-'use client'
-import React from 'react';
-import { Match } from '../lib/api';
+"use client";
+import React from "react";
+import { Match } from "../lib/api";
 
 export interface DataTableProps {
   data: Match[];
@@ -13,12 +13,12 @@ export const DataTable: React.FC<DataTableProps> = ({ data }) => {
         <thead className="bg-gray-50">
           <tr>
             {[
-              'Start Time',
-              'Status',
-              'Home Team',
-              'Away Team',
-              'Home Score',
-              'Away Score',
+              "Start Time",
+              "Status",
+              "Home Team",
+              "Away Team",
+              "Home Score",
+              "Away Score",
             ].map((heading) => (
               <th
                 key={heading}
@@ -45,10 +45,10 @@ export const DataTable: React.FC<DataTableProps> = ({ data }) => {
                 {row.away_team}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                {row.home_score ?? '-'}
+                {row.home_score ?? "-"}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                {row.away_score ?? '-'}
+                {row.away_score ?? "-"}
               </td>
             </tr>
           ))}
