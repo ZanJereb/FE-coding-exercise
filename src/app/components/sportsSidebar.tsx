@@ -19,32 +19,34 @@ const iconMap: Record<string, React.ElementType> = {
 
 interface SportsSidebarProps {
   sports: Sport[];
-  selectedSportId: number | null;
-  onSelectSport: (id: number | null) => void;
+  selectedSportIds: number[];
+  onSelectSport: (id: number) => void;
 }
 
 export const SportsSidebar: React.FC<SportsSidebarProps> = ({
   sports,
-  selectedSportId,
+  selectedSportIds,
   onSelectSport,
 }) => {
   return (
     <aside className="w-64 h-screen sticky top-0">
       <nav className="p-4 space-y-2">
-        {sports.map(sport => {
+        {sports.map((sport) => {
           const Icon = iconMap[sport.name] || FaFutbol;
+          const isSelected = selectedSportIds.includes(sport.id);
+
           return (
             <button
               key={sport.id}
-              onClick={() => onSelectSport(selectedSportId === sport.id ? null : sport.id)}
-              className={`flex items-center gap-3 w-full px-4 py-2 rounded-full ${
-                selectedSportId === sport.id
-                  ? "bg-[#00003a] text-white font-semibold hover:bg-[#00004c] hover:text-white"
-                  : "text-sm hover:bg-gray-100 hover:text-[#00003a]"
+              onClick={() => onSelectSport(sport.id)}
+              className={`flex items-center gap-3 w-full px-4 py-2 rounded-full text-sm transition ${
+                isSelected
+                  ? "bg-[#00003a] text-white font-semibold hover:bg-[#00004c]"
+                  : "text-[#00003a] hover:bg-gray-100"
               }`}
             >
               <Icon className="text-xl" />
-              <span className="text-sm">{sport.name}</span>
+              <span>{sport.name}</span>
             </button>
           );
         })}

@@ -14,8 +14,8 @@ const Home: React.FC = () => {
   const [matches, setMatches] = useState<Match[]>([]);
 
   // UI states
-  const [selectedSportId, setSelectedSportId] = useState<number | null>(null);
-  const [selectedTab, setSelectedTab] = useState<number | null>(null);
+  const [selectedSportIds, setSelectedSportIds] = useState<number[]>([]);
+  const [selectedTournamentIds, setSelectedTournamentIds] = useState<number[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [loadingT, setLoadingT] = useState(true);
   const [loadingM, setLoadingM] = useState(true);
@@ -61,25 +61,32 @@ const Home: React.FC = () => {
   }, []);
 
   // Handlers
-  const handleSelectedSport = (sportId: number | null) => {
-    setSelectedSportId(sportId);
-    const next = sportId === null ? tournaments : tournaments.filter(t => t.sportId === sportId);
-    setFilteredTournaments(next);
-    setSelectedTab(null);
+  const handleSelectedSport = (sportId: number) => {
+    const newSelectedSportIds = selectedSportIds.includes(sportId)
+      ? selectedSportIds.filter(id => id !== sportId)
+      : [...selectedSportIds, sportId];
+    setSelectedSportIds(newSelectedSportIds);
+
+    const newFilteredTournaments = newSelectedSportIds.length
+      ? tournaments.filter(t => newSelectedSportIds.includes(t.sportId))
+      : tournaments;
+    setFilteredTournaments(newFilteredTournaments);
+
+    setSelectedTournamentIds(prev =>
+      prev.filter(id => newFilteredTournaments.some(t => t.id === id))
+    );
   };
 
-  const handleTabSelect = (tournamentId: number | null) => {
-    setSelectedTab(tournamentId);
+  const handleTournamentSelect = (tournamentId: number) => {
+    const newSelectedTournamentIds = selectedTournamentIds.includes(tournamentId)
+      ? selectedTournamentIds.filter(id => id !== tournamentId)
+      : [...selectedTournamentIds, tournamentId];
+    setSelectedTournamentIds(newSelectedTournamentIds);
   };
 
-  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) =>
-    setSearchTerm(e.target.value);
+  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value);
+  const handleSearchSubmit = (e: FormEvent) => { e.preventDefault(); };
 
-  const handleSearchSubmit = (e: FormEvent) => {
-    e.preventDefault();
-  };
-
-  // Initial load
   useEffect(() => {
     fetchSports();
     fetchTournaments();
@@ -97,13 +104,13 @@ const Home: React.FC = () => {
       m.away_team.toLowerCase().includes(searchTerm.toLowerCase());
     if (!matchesSearch) return false;
 
-    if (selectedTab !== null) {
-      return m.tournamentId === selectedTab;
+    if (selectedTournamentIds.length > 0) {
+      return selectedTournamentIds.includes(m.tournamentId);
     }
 
-    if (selectedSportId !== null) {
+    if (selectedSportIds.length > 0) {
       const tour = tournaments.find(t => t.id === m.tournamentId);
-      return tour?.sportId === selectedSportId;
+      return tour && selectedSportIds.includes(tour.sportId);
     }
 
     return true;
@@ -113,7 +120,7 @@ const Home: React.FC = () => {
     <div className="flex min-h-screen bg-gray-100">
       <SportsSidebar
         sports={sports}
-        selectedSportId={selectedSportId}
+        selectedSportIds={selectedSportIds}
         onSelectSport={handleSelectedSport}
       />
 
@@ -134,8 +141,8 @@ const Home: React.FC = () => {
 
         <FilterTabs
           tabs={filteredTournaments}
-          selectedId={selectedTab}
-          onSelect={handleTabSelect}
+          selectedIds={selectedTournamentIds}
+          onSelect={handleTournamentSelect}
         />
 
         <DataTable data={filteredMatches} />
